@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm cream/beige inspired by Pi.ai */
+    --background: 36 33% 97%;
+    --foreground: 160 50% 15%;
+
+    --card: 36 30% 99%;
+    --card-foreground: 160 50% 15%;
+
+    --popover: 36 30% 99%;
+    --popover-foreground: 160 50% 15%;
+
+    /* Deep forest green */
+    --primary: 160 50% 20%;
+    --primary-foreground: 36 33% 97%;
+
+    /* Soft sage */
+    --secondary: 150 20% 90%;
+    --secondary-foreground: 160 50% 15%;
+
+    /* Muted cream */
+    --muted: 36 20% 92%;
+    --muted-foreground: 160 20% 40%;
+
+    /* Neutral accent */
+    --accent: 150 20% 90%;
+    --accent-foreground: 160 50% 15%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 36 33% 97%;
+
+    --border: 36 20% 88%;
+    --input: 36 20% 88%;
+    --ring: 160 50% 20%;
+
+    --radius: 1rem;
+
+    /* Custom tokens */
+    --success: 145 60% 40%;
+    --success-foreground: 36 33% 97%;
+    --warning: 160 25% 45%;
+    --warning-foreground: 36 33% 97%;
+    --info: 200 70% 50%;
+    --info-foreground: 36 33% 97%;
+
+    /* Gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(36 33% 97%) 0%, hsl(32 40% 92%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(36 30% 99%) 0%, hsl(36 25% 96%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(160 50% 20%) 0%, hsl(160 45% 30%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(32 60% 85%) 0%, hsl(36 50% 90%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(160 20% 20% / 0.08);
+    --shadow-md: 0 4px 16px -4px hsl(160 20% 20% / 0.1);
+    --shadow-lg: 0 8px 32px -8px hsl(160 20% 20% / 0.12);
+    --shadow-glow: 0 0 24px hsl(160 50% 20% / 0.15);
+
+    /* Sidebar */
+    --sidebar-background: 36 25% 95%;
+    --sidebar-foreground: 160 50% 15%;
+    --sidebar-primary: 160 50% 20%;
+    --sidebar-primary-foreground: 36 33% 97%;
+    --sidebar-accent: 32 40% 88%;
+    --sidebar-accent-foreground: 160 50% 15%;
+    --sidebar-border: 36 20% 88%;
+    --sidebar-ring: 160 50% 20%;
+  }
+
+  .dark {
+    /* Playful dark theme - deep teal with warm coral accents */
+    --background: 180 25% 8%;
+    --foreground: 45 30% 95%;
+
+    --card: 180 20% 12%;
+    --card-foreground: 45 30% 95%;
+
+    --popover: 180 20% 12%;
+    --popover-foreground: 45 30% 95%;
+
+    /* Vibrant teal primary */
+    --primary: 170 70% 50%;
+    --primary-foreground: 180 25% 8%;
+
+    /* Deep purple secondary */
+    --secondary: 280 30% 20%;
+    --secondary-foreground: 45 30% 95%;
+
+    /* Muted teal */
+    --muted: 180 20% 16%;
+    --muted-foreground: 180 15% 60%;
+
+    /* Neutral accent */
+    --accent: 180 20% 16%;
+    --accent-foreground: 45 30% 95%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 45 30% 95%;
+
+    --border: 180 15% 20%;
+    --input: 180 15% 20%;
+    --ring: 170 70% 50%;
+
+    /* Custom tokens for dark */
+    --success: 150 70% 45%;
+    --success-foreground: 180 25% 8%;
+    --warning: 170 60% 45%;
+    --warning-foreground: 180 25% 8%;
+    --info: 200 80% 55%;
+    --info-foreground: 180 25% 8%;
+
+    /* Dark gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(180 25% 8%) 0%, hsl(180 20% 12%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(180 20% 12%) 0%, hsl(180 20% 10%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(170 70% 50%) 0%, hsl(160 60% 40%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(15 70% 55%) 0%, hsl(25 60% 50%) 100%);
+
+    /* Dark shadows with glow */
+    --shadow-sm: 0 2px 8px -2px hsl(180 50% 5% / 0.5);
+    --shadow-md: 0 4px 16px -4px hsl(180 50% 5% / 0.6);
+    --shadow-lg: 0 8px 32px -8px hsl(180 50% 5% / 0.7);
+    --shadow-glow: 0 0 30px hsl(170 70% 50% / 0.25);
+
+    /* Dark sidebar */
+    --sidebar-background: 180 20% 10%;
+    --sidebar-foreground: 45 30% 95%;
+    --sidebar-primary: 170 70% 50%;
+    --sidebar-primary-foreground: 180 25% 8%;
+    --sidebar-accent: 280 30% 25%;
+    --sidebar-accent-foreground: 45 30% 95%;
+    --sidebar-border: 180 15% 20%;
+    --sidebar-ring: 170 70% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-sans {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .glass {
+    @apply bg-card/80 backdrop-blur-md;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.5s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/20 rounded-full hover:bg-primary/30 transition-colors;
+}

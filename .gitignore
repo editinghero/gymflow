@@ -1,0 +1,33 @@
+node_modules
+dist
+.kiro
+landing/node_modules
+landing/dist
+
+.env
+.env.*
+
+server/.env
+server/.env.*
+!server/.env.example
+
+*.log
+.DS_Store
+bun.lockb
+package-lock.json
+server/node_modules
+server/dist
+.vscode
+
+# Secrets
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+
+# OS / IDE
+Thumbs.db
