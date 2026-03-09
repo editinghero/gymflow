@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, Dumbbell, Moon, Shield, Sparkles, Sun, Zap } from 'lucide-react';
+import { ArrowRight, Calendar, CheckCircle, Clock, CreditCard, Dumbbell, Github, Instagram, Moon, Shield, Sun, Users, Zap } from 'lucide-react';
 import { cn } from './lib/utils';
 
 function ThemeToggle() {
@@ -44,7 +44,7 @@ function Navbar() {
   }, []);
 
   return (
-    <header className={cn('sticky top-0 z-50 border-b', scrolled ? 'glass border-border shadow-soft' : 'bg-transparent border-transparent')}>
+    <header className={cn('sticky top-0 z-50 border-b', scrolled ? 'glass border-border shadow-md' : 'bg-transparent border-transparent')}>
       <div className="container flex h-14 items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -62,14 +62,14 @@ function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href="/"
+            href="https://gymflow.pages.dev"
             className="hidden sm:inline-flex h-9 px-3 rounded-xl border border-border bg-background/50 hover:bg-muted transition-colors text-sm items-center"
           >
             Open App
           </a>
           <ThemeToggle />
           <a
-            href="#pricing"
+            href="https://gymflow.pages.dev"
             className="inline-flex h-9 px-4 rounded-xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity text-sm items-center gap-2"
           >
             Get Started <ArrowRight className="h-4 w-4" />
@@ -98,7 +98,7 @@ function FeatureCard({
   icon: any;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card/60 p-5 shadow-soft">
+    <div className="rounded-2xl border border-border bg-card/60 p-5 shadow-soft hover:shadow-md transition-shadow">
       <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
         <Icon className="h-5 w-5 text-primary" />
       </div>
@@ -122,17 +122,17 @@ export default function App() {
 
           <div className="container py-16 sm:py-20 relative">
             <div className="max-w-3xl">
-              <Badge>Owner + Member dashboards</Badge>
+              <Badge>Complete gym management system</Badge>
               <h1 className="mt-5 font-display text-4xl sm:text-5xl font-semibold leading-tight">
-                Run your gym membership flow with clarity.
+                Modern gym management for small fitness studios
               </h1>
               <p className="mt-4 text-muted-foreground text-base sm:text-lg leading-relaxed">
-                GymFlow helps you manage members, plans, schedules, check-ins, and payments with a clean, modern UI.
+                GymFlow is a complete membership management system built for gym owners. Manage members, track check-ins, handle payments, and schedule your gym hours - all in one beautiful interface.
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <a
-                  href="/"
+                  href="https://gymflow.pages.dev"
                   className="inline-flex h-11 px-5 rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity items-center justify-center gap-2"
                 >
                   Open the App <ArrowRight className="h-4 w-4" />
@@ -147,16 +147,16 @@ export default function App() {
 
               <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
-                  <p className="text-sm text-muted-foreground">Setup</p>
+                  <p className="text-sm text-muted-foreground">Setup time</p>
                   <p className="mt-1 font-display text-xl font-semibold">2 minutes</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
-                  <p className="text-sm text-muted-foreground">Designed for</p>
+                  <p className="text-sm text-muted-foreground">Built for</p>
                   <p className="mt-1 font-display text-xl font-semibold">Small gyms</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
-                  <p className="text-sm text-muted-foreground">Style</p>
-                  <p className="mt-1 font-display text-xl font-semibold">Warm + modern</p>
+                  <p className="text-sm text-muted-foreground">Tech stack</p>
+                  <p className="mt-1 font-display text-xl font-semibold">React + Node</p>
                 </div>
               </div>
             </div>
@@ -165,25 +165,40 @@ export default function App() {
 
         <section id="features" className="container py-14 sm:py-16">
           <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold">Everything you need, nothing you don’t</h2>
-            <p className="mt-3 text-muted-foreground">A simple workflow for owners, and a smooth experience for members.</p>
+            <h2 className="font-display text-3xl font-semibold">Complete feature set for gym owners</h2>
+            <p className="mt-3 text-muted-foreground">Everything you need to run your gym efficiently, from member onboarding to daily operations.</p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
             <FeatureCard
               title="Member management"
-              description="Approve, pause, cancel, or remove members with clear states and instant updates."
-              icon={Sparkles}
+              description="Add members manually or let them register with your gym's access code. Approve, pause, cancel, or remove memberships with clear status tracking."
+              icon={Users}
             />
             <FeatureCard
-              title="Payments requests"
-              description="Collect renewal requests and approve them with one click (with notifications)."
+              title="Check-in system"
+              description="Members can check in and out with one tap. Track visit history, total time spent, and view check-in calendar with holiday exclusions."
+              icon={CheckCircle}
+            />
+            <FeatureCard
+              title="Payment requests"
+              description="Members submit payment requests for plan changes or renewals. Approve with one click and get instant notifications for pending requests."
+              icon={CreditCard}
+            />
+            <FeatureCard
+              title="Membership plans"
+              description="Create unlimited plans with custom pricing, duration, and features. Set plans as active or inactive. Members can view and request plan changes."
               icon={Zap}
             />
             <FeatureCard
-              title="Secure by design"
-              description="Minimal server logging and sanitized errors to avoid leaking internal details."
-              icon={Shield}
+              title="Schedule management"
+              description="Set your gym's working hours for each day of the week. Add multiple time slots per day. Members see today's hours and full weekly schedule."
+              icon={Clock}
+            />
+            <FeatureCard
+              title="Holiday tracking"
+              description="Mark holidays when your gym is closed. Holidays appear on member calendars and are excluded from check-in statistics automatically."
+              icon={Calendar}
             />
           </div>
         </section>
@@ -192,18 +207,19 @@ export default function App() {
           <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-10 shadow-soft">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="font-display text-3xl font-semibold">How it works</h2>
-                <p className="mt-3 text-muted-foreground">A clean flow from signup to check-in.</p>
+                <h2 className="font-display text-3xl font-semibold">How GymFlow works</h2>
+                <p className="mt-3 text-muted-foreground">A streamlined workflow from gym setup to daily operations.</p>
 
                 <div className="mt-6 space-y-4">
                   {[
-                    { t: 'Create your gym', d: 'Signup as owner and your gym profile is created automatically.' },
-                    { t: 'Add plans', d: 'Define memberships and duration once.' },
-                    { t: 'Members join', d: 'Members register with access code and request a plan.' },
-                    { t: 'Approve & manage', d: 'Approve payments, pause or cancel when needed.' },
+                    { t: 'Owner signs up', d: 'Create your account and your gym profile is automatically generated with a unique access code.' },
+                    { t: 'Configure your gym', d: 'Add membership plans, set working hours, mark holidays, and customize your gym details.' },
+                    { t: 'Members join', d: 'Members register using your gym access code and request a membership plan.' },
+                    { t: 'Approve & manage', d: 'Review payment requests, approve memberships, and manage member statuses from your dashboard.' },
+                    { t: 'Track operations', d: 'Monitor check-ins, view member activity, and manage day-to-day operations effortlessly.' },
                   ].map((s) => (
                     <div key={s.t} className="flex gap-3">
-                      <div className="mt-1 h-7 w-7 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <div className="mt-1 h-7 w-7 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span className="text-primary text-sm font-semibold">✓</span>
                       </div>
                       <div>
@@ -216,24 +232,24 @@ export default function App() {
               </div>
 
               <div className="rounded-2xl border border-border bg-background/60 p-5">
-                <p className="text-sm text-muted-foreground">Designed to feel calm</p>
-                <p className="mt-2 font-display text-2xl font-semibold">Warm theme, soft shadows, and glass blur.</p>
-                <div className="mt-5 grid grid-cols-2 gap-3">
+                <p className="text-sm text-muted-foreground">Technical highlights</p>
+                <p className="mt-2 font-display text-2xl font-semibold">Built with modern web technologies</p>
+                <div className="mt-5 space-y-3">
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Navbar</p>
-                    <p className="mt-1 text-sm font-medium">Blur + sticky</p>
+                    <p className="text-xs text-muted-foreground">Frontend</p>
+                    <p className="mt-1 text-sm font-medium">React 18 + TypeScript + Vite</p>
                   </div>
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Components</p>
-                    <p className="mt-1 text-sm font-medium">Rounded + modern</p>
+                    <p className="text-xs text-muted-foreground">Backend</p>
+                    <p className="mt-1 text-sm font-medium">Express.js + PostgreSQL + JWT</p>
                   </div>
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Calendar</p>
-                    <p className="mt-1 text-sm font-medium">No orange</p>
+                    <p className="text-xs text-muted-foreground">UI/UX</p>
+                    <p className="mt-1 text-sm font-medium">Tailwind CSS + Radix UI + Glassmorphism</p>
                   </div>
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Alerts</p>
-                    <p className="mt-1 text-sm font-medium">Clear statuses</p>
+                    <p className="text-xs text-muted-foreground">Security</p>
+                    <p className="mt-1 text-sm font-medium">bcrypt password hashing + JWT tokens</p>
                   </div>
                 </div>
               </div>
@@ -241,44 +257,171 @@ export default function App() {
           </div>
         </section>
 
-        <section id="pricing" className="container py-14 sm:py-16">
+        <section className="container py-14 sm:py-16">
           <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold">Simple pricing</h2>
-            <p className="mt-3 text-muted-foreground">Pick a plan and start managing members.</p>
+            <h2 className="font-display text-3xl font-semibold">Dual dashboard system</h2>
+            <p className="mt-3 text-muted-foreground">Separate interfaces optimized for owners and members.</p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { name: 'Free', price: 'Free', desc: '10 members only allowed.' },
-              { name: 'One-time', price: '₹2000', desc: 'One-time purchase for the full app.' },
-            ].map((p) => (
-              <div key={p.name} className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft">
-                <p className="text-sm text-muted-foreground">{p.name}</p>
-                <p className="mt-2 font-display text-3xl font-semibold">{p.price}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
-                <a
-                  href="/"
-                  className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
-                >
-                  Start
-                </a>
+            <div className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft">
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-primary" />
               </div>
-            ))}
+              <h3 className="mt-4 font-display text-xl font-semibold">Owner dashboard</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Complete control panel for gym management</p>
+              <ul className="mt-4 space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>View all members with status filters (active, pending, paused, cancelled)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Manage membership plans and pricing</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Review and approve payment requests with notifications</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>View all member check-ins with calendar and filters</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Configure gym schedule and holidays</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Update gym details and payment information</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft">
+              <div className="h-12 w-12 rounded-xl bg-info/10 flex items-center justify-center">
+                <Users className="h-6 w-6 text-info" />
+              </div>
+              <h3 className="mt-4 font-display text-xl font-semibold">Member dashboard</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Simple interface for gym members</p>
+              <ul className="mt-4 space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>One-tap check-in and check-out system</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>View current membership plan and expiry date</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>Browse available plans and request changes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>Track check-in history with calendar view</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>See gym schedule and upcoming holidays</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-info mt-0.5">•</span>
+                  <span>View total visits, weekly stats, and workout time</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="pricing" className="container py-14 sm:py-16">
+          <div className="max-w-2xl">
+            <h2 className="font-display text-3xl font-semibold">Simple, transparent pricing</h2>
+            <p className="mt-3 text-muted-foreground">Choose the plan that fits your gym size.</p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
+            <div className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft">
+              <p className="text-sm text-muted-foreground">Free</p>
+              <p className="mt-2 font-display text-3xl font-semibold">$0</p>
+              <p className="mt-2 text-sm text-muted-foreground">Perfect for trying out GymFlow</p>
+              <ul className="mt-4 space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Up to 10 members</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>All core features</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Check-in tracking</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Payment requests</span>
+                </li>
+              </ul>
+              <a
+                href="https://gymflow.pages.dev"
+                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl border border-border bg-background hover:bg-muted transition-colors"
+              >
+                Start free
+              </a>
+            </div>
+
+            <div className="rounded-3xl border-2 border-primary bg-card/60 p-6 shadow-soft relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium">
+                Recommended
+              </div>
+              <p className="text-sm text-muted-foreground">One-time purchase</p>
+              <p className="mt-2 font-display text-3xl font-semibold">$25</p>
+              <p className="mt-2 text-sm text-muted-foreground">Lifetime access, no recurring fees</p>
+              <ul className="mt-4 space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Unlimited members</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>All features included</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Priority support</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span>Future updates</span>
+                </li>
+              </ul>
+              <a
+                href="https://gymflow.pages.dev"
+                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                Get started
+              </a>
+            </div>
           </div>
         </section>
 
         <section id="faq" className="container py-14 sm:py-16">
           <div className="max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold">FAQ</h2>
-            <p className="mt-3 text-muted-foreground">Quick answers.</p>
+            <h2 className="font-display text-3xl font-semibold">Frequently asked questions</h2>
+            <p className="mt-3 text-muted-foreground">Everything you need to know about GymFlow.</p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             {[ 
-              { q: 'Does it work for owners and members?', a: 'Yes, both dashboards are built in.' },
-              { q: 'Can I pause or cancel subscriptions?', a: 'Yes. Pause keeps plan; cancel frees plan.' },
-              { q: 'Will it show payment request notifications?', a: 'Yes, the bell shows pending payment requests.' },
-              { q: 'Does it auto check-in on login?', a: 'No, check-ins require clicking the Check In button.' },
+              { q: 'Does it work for both owners and members?', a: 'Yes. GymFlow has separate dashboards for gym owners and members, each optimized for their specific needs.' },
+              { q: 'Can I pause or cancel memberships?', a: 'Yes. Owners can pause memberships (keeps plan assigned) or cancel them (frees up the plan slot) with one click.' },
+              { q: 'How do payment requests work?', a: 'Members submit payment requests for plan changes or renewals. Owners get notifications and can approve with one click.' },
+              { q: 'Is check-in automatic?', a: 'No. Members must manually check in and out using the button in their dashboard. This prevents accidental check-ins.' },
+              { q: 'Can I track member attendance?', a: 'Yes. View all check-ins in a calendar, filter by member, and see statistics like total visits and time spent.' },
+              { q: 'How do I add members?', a: 'Members can self-register using your gym access code, or you can add them manually from the owner dashboard.' },
+              { q: 'Can I customize membership plans?', a: 'Yes. Create unlimited plans with custom names, prices, durations, and feature lists. Toggle plans active/inactive anytime.' },
+              { q: 'What about gym holidays?', a: 'Mark holidays in the schedule manager. They appear on member calendars and are excluded from attendance statistics.' },
             ].map((f) => (
               <div key={f.q} className="rounded-2xl border border-border bg-card/60 p-5">
                 <p className="font-medium">{f.q}</p>
@@ -288,13 +431,50 @@ export default function App() {
           </div>
         </section>
 
+        <section className="container py-14 sm:py-16">
+          <div className="rounded-3xl border border-border bg-gradient-to-br from-primary/5 to-info/5 p-8 sm:p-12 text-center">
+            <h2 className="font-display text-3xl font-semibold">Ready to modernize your gym?</h2>
+            <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+              Join gym owners who are simplifying their operations with GymFlow. Get started in minutes.
+            </p>
+            <a
+              href="https://gymflow.pages.dev"
+              className="mt-6 inline-flex h-11 px-6 rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity items-center gap-2"
+            >
+              Open GymFlow <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </section>
+
         <footer className="border-t">
-          <div className="container py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Dumbbell className="h-4 w-4" />
-              <span>GymFlow</span>
+          <div className="container py-10">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Dumbbell className="h-4 w-4" />
+                <span>GymFlow</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://github.com/editinghero/gymflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://instagram.com/astralquarks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+              </div>
+              <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} GymFlow. All rights reserved.</div>
             </div>
-            <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} GymFlow. All rights reserved.</div>
           </div>
         </footer>
       </main>

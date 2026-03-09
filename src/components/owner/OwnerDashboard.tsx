@@ -107,13 +107,26 @@ export function OwnerDashboard() {
             owner_id: user.id,
             name: businessName,
             access_code: accessCode,
-          }) as any);
+          }) as any).select();
         
         const { data: newBusiness, error: createError } = insertResult;
 
         if (!createError && newBusiness) {
-          created = newBusiness[0] as Business;
+          created = (Array.isArray(newBusiness) ? newBusiness[0] : newBusiness) as Business;
           break;
+        }
+
+        if (!createError && !newBusiness) {
+          const { data: fetchedBusiness, error: refetchError } = await db
+            .from('businesses')
+            .select('*')
+            .eq('owner_id', user.id)
+            .maybeSingle();
+
+          if (!refetchError && fetchedBusiness) {
+            created = fetchedBusiness;
+            break;
+          }
         }
 
         lastCreateError = createError;

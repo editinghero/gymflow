@@ -6,8 +6,7 @@
 
 @layer base {
   :root {
-    /* Warm cream/beige inspired by Pi.ai */
-    --background: 36 33% 97%;
+    --background: 33 39% 96%;
     --foreground: 160 50% 15%;
 
     --card: 36 30% 99%;

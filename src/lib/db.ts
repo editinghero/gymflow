@@ -19,7 +19,12 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     body: options.body ? JSON.stringify(options.body) : undefined,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  } catch {
+    throw new Error('Unable to reach server');
+  }
 
   const contentType = response.headers.get('content-type') || '';
   const hasJson = contentType.includes('application/json');

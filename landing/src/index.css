@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 36 33% 97%;
+    --background: 33 48% 96%;
     --foreground: 160 50% 15%;
 
     --card: 36 30% 99%;
@@ -110,7 +110,8 @@
 
 @layer utilities {
   .glass {
-    background-color: hsl(var(--card) / 0.8);
-    backdrop-filter: blur(12px);
+    background-color: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 }

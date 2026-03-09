@@ -14,29 +14,53 @@ const Index = () => {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [isCheckingRole, setIsCheckingRole] = useState(false);
   const checkedUserId = useRef<string | null>(null);
+  const checkAttempts = useRef<number>(0);
 
-  useEffect(() => {
-    if (currentRole) return;
-    const savedRole = localStorage.getItem('selected_role') as UserRole | null;
-    if (savedRole === 'owner' || savedRole === 'customer') {
-      setCurrentRole(savedRole);
+  const persistRole = async (role: UserRole) => {
+    setCurrentRole(role);
+    setUserRole(role);
+    localStorage.setItem('selected_role', role);
+    if (!user?.id) return;
+
+    const res = await (db.from('user_roles').insert({ user_id: user.id, role }) as any).select();
+    const { error } = res || {};
+    if (error) {
+      const msg = (error.message || '').toLowerCase();
+      const isDuplicate = msg.includes('duplicate') || msg.includes('unique');
+      if (!isDuplicate) {
+        console.error('Role insert error');
+      }
     }
-  }, [currentRole]);
+  };
 
   useEffect(() => {
     const checkRole = async () => {
       if (!user?.id) {
         setUserRole(null);
-        setCurrentRole((prev) => prev ?? ((localStorage.getItem('selected_role') as UserRole | null) || null));
+        setCurrentRole(null);
         checkedUserId.current = null;
+        checkAttempts.current = 0;
         return;
       }
 
-      if (checkedUserId.current === user.id) {
+      const savedRole = localStorage.getItem('selected_role') as UserRole | null;
+      if (savedRole === 'owner' || savedRole === 'customer') {
+        setCurrentRole(savedRole);
+      }
+
+      if (checkedUserId.current === user.id && checkAttempts.current >= 3) {
+        if (!userRole && (savedRole === 'owner' || savedRole === 'customer')) {
+          await persistRole(savedRole);
+        }
         return;
       }
 
-      checkedUserId.current = user.id;
+      if (checkedUserId.current !== user.id) {
+        checkedUserId.current = user.id;
+        checkAttempts.current = 0;
+      }
+
+      checkAttempts.current += 1;
       setIsCheckingRole(true);
 
       try {
@@ -48,11 +72,7 @@ const Index = () => {
 
         if (error) {
           console.error('Role check error:', error);
-          const fallback = (localStorage.getItem('selected_role') as UserRole | null);
-          if (fallback === 'owner' || fallback === 'customer') {
-            setUserRole(fallback);
-            setCurrentRole(fallback);
-          }
+          setIsCheckingRole(false);
           return;
         }
 
@@ -63,20 +83,15 @@ const Index = () => {
           setUserRole(role);
           setCurrentRole(role);
           localStorage.setItem('selected_role', role);
+          checkAttempts.current = 3;
         } else {
-          const fallback = (localStorage.getItem('selected_role') as UserRole | null);
-          if (fallback === 'owner' || fallback === 'customer') {
-            setUserRole(fallback);
-            setCurrentRole(fallback);
+          if (savedRole === 'owner' || savedRole === 'customer') {
+            await persistRole(savedRole);
+            checkAttempts.current = 3;
           }
         }
       } catch (error) {
         console.error('Role check error:', error);
-        const fallback = (localStorage.getItem('selected_role') as UserRole | null);
-        if (fallback === 'owner' || fallback === 'customer') {
-          setUserRole(fallback);
-          setCurrentRole(fallback);
-        }
       } finally {
         setIsCheckingRole(false);
       }
@@ -104,22 +119,20 @@ const Index = () => {
       return <CustomerDashboard />;
     }
   }
+
+  if (user && !userRole) {
+    return <RoleSelector onSelectRole={persistRole} />;
+  }
   
   if (!user) {
     if (!currentRole) {
       return <RoleSelector onSelectRole={setCurrentRole} />;
     }
     if (currentRole === 'owner') {
-      return <OwnerAuth onBack={() => {
-        localStorage.removeItem('selected_role');
-        setCurrentRole(null);
-      }} />;
+      return <OwnerAuth onBack={() => setCurrentRole(null)} />;
     }
     if (currentRole === 'customer') {
-      return <CustomerAuth onBack={() => {
-        localStorage.removeItem('selected_role');
-        setCurrentRole(null);
-      }} />;
+      return <CustomerAuth onBack={() => setCurrentRole(null)} />;
     }
   }
 

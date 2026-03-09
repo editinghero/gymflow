@@ -159,7 +159,7 @@ export function CustomerAuth({ onBack }: CustomerAuthProps) {
           email: email.trim(),
           phone: phone.trim(),
           status: 'pending',
-        });
+        }).then((res: any) => res);
 
         if (memberError) {
           console.error('Error creating member:', memberError);
@@ -167,7 +167,7 @@ export function CustomerAuth({ onBack }: CustomerAuthProps) {
         await db.from('user_roles').insert({
           user_id: signInData.user.id,
           role: 'customer',
-        });
+        }).then((res: any) => res);
 
         localStorage.setItem('customer_business_id', businessId);
         toast.success('Registration pending! Please wait for gym owner approval.');
