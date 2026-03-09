@@ -1,23 +1,37 @@
-node_modules
-dist
-.kiro
-landing/node_modules
-landing/dist
+ # dependencies
+node_modules/
+**/node_modules/
 
+# builds
+dist/
+build/
+**/dist/
+**/build/
+
+# env files
 .env
 .env.*
+!.env.example
 
-server/.env
-server/.env.*
-!server/.env.example
-
+# logs
 *.log
+logs/
+
+# OS / IDE
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# coverage
+coverage/
+
+# tooling
+.kiro/
+
+# lock files (optional)
 bun.lockb
 package-lock.json
-server/node_modules
-server/dist
-.vscode
 
 # Secrets
 *.pem
@@ -28,6 +42,3 @@ server/dist
 *.cer
 *.jks
 *.keystore
-
-# OS / IDE
-Thumbs.db
