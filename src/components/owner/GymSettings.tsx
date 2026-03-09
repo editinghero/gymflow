@@ -21,6 +21,7 @@ export function GymSettings({ businessId }: GymSettingsProps) {
   const [website, setWebsite] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [upiId, setUpiId] = useState("");
+  const [currencySymbol, setCurrencySymbol] = useState("₹");
 
   useEffect(() => {
     const fetchBusiness = async () => {
@@ -37,6 +38,7 @@ export function GymSettings({ businessId }: GymSettingsProps) {
         setWebsite(data.website || "");
         setContactPhone(data.contact_phone || "");
         setUpiId(data.upi_id || "");
+        setCurrencySymbol((data as any).currency_symbol || "₹");
       }
       setLoading(false);
     };
@@ -60,6 +62,7 @@ export function GymSettings({ businessId }: GymSettingsProps) {
         website: website.trim() || null,
         contact_phone: contactPhone.trim() || null,
         upi_id: upiId.trim() || null,
+        currency_symbol: currencySymbol.trim() || '₹',
       })
       .eq('id', businessId);
 
@@ -158,6 +161,23 @@ export function GymSettings({ businessId }: GymSettingsProps) {
             />
             <p className="text-xs text-muted-foreground">
               This will be shown to customers for optional online payments. No payment integration - just for reference.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="currencySymbol" className="flex items-center gap-2">
+              <Wallet className="w-4 h-4" />
+              Currency Symbol
+            </Label>
+            <Input
+              id="currencySymbol"
+              value={currencySymbol}
+              onChange={(e) => setCurrencySymbol(e.target.value)}
+              placeholder="₹"
+              className="rounded-xl"
+            />
+            <p className="text-xs text-muted-foreground">
+              Used when showing plan prices and payment amounts.
             </p>
           </div>
         </div>

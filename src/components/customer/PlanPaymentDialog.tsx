@@ -89,7 +89,7 @@ export function PlanPaymentDialog({
           <div className="rounded-xl border bg-muted/50 p-4">
             <p className="text-sm text-muted-foreground mb-1">Selected Plan</p>
             <p className="font-display text-lg font-medium">{plan.name}</p>
-            <p className="text-2xl font-display font-semibold mt-2">₹{plan.price.toLocaleString('en-IN')}</p>
+            <p className="text-2xl font-display font-semibold mt-2">{(business as any).currency_symbol || '₹'}{plan.price.toLocaleString('en-IN')}</p>
           </div>
 
           {business.upi_id ? (
@@ -111,7 +111,7 @@ export function PlanPaymentDialog({
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Pay ₹{plan.price.toLocaleString('en-IN')} to this UPI ID
+                  Pay {((business as any).currency_symbol || '₹')}{plan.price.toLocaleString('en-IN')} to this UPI ID
                 </p>
               </div>
 

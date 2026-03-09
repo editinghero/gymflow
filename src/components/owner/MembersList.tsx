@@ -16,7 +16,7 @@ import {
   Ban,
   Trash2
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, differenceInDays, addDays } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -50,14 +50,15 @@ interface MembersListProps {
 export function MembersList({ businessId }: MembersListProps) {
   const [members, setMembers] = useState<Member[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
-  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [currencySymbol, setCurrencySymbol] = useState('₹');
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'active' | 'expiring' | 'expired' | 'left'>('all');
   const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
   const [checkInsDialogOpen, setCheckInsDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedMemberForCheckIns, setSelectedMemberForCheckIns] = useState<Member | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const fetchData = async () => {
     const [membersRes, plansRes] = await Promise.all([
@@ -70,8 +71,18 @@ export function MembersList({ businessId }: MembersListProps) {
     setLoading(false);
   };
 
+  const fetchCurrency = async () => {
+    const { data } = await db
+      .from('businesses')
+      .select('currency_symbol')
+      .eq('id', businessId)
+      .maybeSingle();
+    setCurrencySymbol((data as any)?.currency_symbol || '₹');
+  };
+
   useEffect(() => {
     fetchData();
+    fetchCurrency();
   }, [businessId]);
 
   const pendingCount = members.filter(m => m.status === 'pending').length;
@@ -93,8 +104,9 @@ export function MembersList({ businessId }: MembersListProps) {
     if (!plan) return;
 
     const startDate = new Date();
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + plan.duration_days);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + Math.max(0, plan.duration_days - 1));
 
     const { error } = await db
       .from('members')
@@ -133,10 +145,24 @@ export function MembersList({ businessId }: MembersListProps) {
   };
 
   const handlePauseMember = async (member: Member) => {
-    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const todayDate = new Date(now);
+    todayDate.setHours(0, 0, 0, 0);
+    const today = todayDate.toISOString().split('T')[0];
+
+    const end = member.end_date ? new Date(member.end_date) : null;
+    if (end) end.setHours(0, 0, 0, 0);
+    const remainingDays = end ? Math.max(0, differenceInDays(end, todayDate) + 1) : 0;
+    const pausedEndDate = member.end_date || null;
+
     const { error } = await db
       .from('members')
-      .update({ status: 'paused', end_date: today })
+      .update({
+        status: 'paused',
+        paused_end_date: pausedEndDate,
+        paused_at: today,
+        paused_remaining_days: remainingDays,
+      })
       .eq('id', member.id);
 
     if (error) {
@@ -154,7 +180,8 @@ export function MembersList({ businessId }: MembersListProps) {
       .update({ 
         plan_id: null,
         end_date: today,
-        status: 'cancelled'
+        status: 'cancelled',
+        paused_end_date: null,
       })
       .eq('id', member.id);
 
@@ -171,10 +198,11 @@ export function MembersList({ businessId }: MembersListProps) {
       return;
     }
 
-    const { error } = await db
-      .from('members')
-      .delete()
-      .eq('id', member.id);
+    if (member.user_id) {
+      await db.from('users').delete().eq('id', member.user_id);
+    }
+
+    const { error } = await db.from('members').delete().eq('id', member.id);
 
     if (error) {
       toast.error(error.message || 'Failed to remove member');
@@ -333,9 +361,15 @@ export function MembersList({ businessId }: MembersListProps) {
                       {plan && (
                         <>
                           <p className="text-sm font-medium">{plan.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Expires: {member.end_date ? format(new Date(member.end_date), 'MMM d, yyyy') : 'N/A'}
-                          </p>
+                          {member.status === 'paused' ? (
+                            <p className="text-xs text-muted-foreground">
+                              Frozen: {typeof (member as any).paused_remaining_days === 'number' ? (member as any).paused_remaining_days : 0} days
+                            </p>
+                          ) : (
+                            <p className="text-xs text-muted-foreground">
+                              Expires: {member.end_date ? format(new Date(member.end_date), 'MMM d, yyyy') : 'N/A'}
+                            </p>
+                          )}
                         </>
                       )}
                       {!plan && member.status === 'active' && (
@@ -368,7 +402,20 @@ export function MembersList({ businessId }: MembersListProps) {
                         {member.status === 'paused' && (
                           <DropdownMenuItem onClick={() => {
                             (async () => {
-                              const { error } = await db.from('members').update({ status: 'active' }).eq('id', member.id);
+                              const remaining = (member as any).paused_remaining_days;
+                              const today = new Date();
+                              today.setHours(0, 0, 0, 0);
+                              const restoredEndDate =
+                                typeof remaining === 'number'
+                                  ? addDays(today, Math.max(0, remaining - 1)).toISOString().split('T')[0]
+                                  : ((member as any).paused_end_date || member.end_date || null);
+                              const { error } = await db.from('members').update({ 
+                                status: 'active',
+                                end_date: restoredEndDate,
+                                paused_end_date: null,
+                                paused_at: null,
+                                paused_remaining_days: null,
+                              }).eq('id', member.id);
                               if (error) {
                                 toast.error('Failed to resume subscription');
                                 return;
@@ -433,7 +480,7 @@ export function MembersList({ businessId }: MembersListProps) {
                 <SelectContent>
                   {plans.map(plan => (
                     <SelectItem key={plan.id} value={plan.id}>
-                      {plan.name} - ₹{plan.price.toLocaleString('en-IN')} ({plan.duration_days} days)
+                      {plan.name} - {currencySymbol}{plan.price.toLocaleString('en-IN')} ({plan.duration_days} days)
                     </SelectItem>
                   ))}
                 </SelectContent>

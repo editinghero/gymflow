@@ -21,6 +21,31 @@ const ensureMemberStatusConstraint = async () => {
   }
 };
 
+const ensureBusinessCurrencySymbolColumn = async () => {
+  try {
+    await query("ALTER TABLE businesses ADD COLUMN IF NOT EXISTS currency_symbol TEXT NOT NULL DEFAULT '₹'");
+  } catch (error) {
+    console.error('Migration error:', error);
+  }
+};
+
+const ensureMembersPausedEndDateColumn = async () => {
+  try {
+    await query("ALTER TABLE members ADD COLUMN IF NOT EXISTS paused_end_date DATE");
+  } catch (error) {
+    console.error('Migration error:', error);
+  }
+};
+
+const ensureMembersPauseFreezeColumns = async () => {
+  try {
+    await query("ALTER TABLE members ADD COLUMN IF NOT EXISTS paused_at DATE");
+    await query("ALTER TABLE members ADD COLUMN IF NOT EXISTS paused_remaining_days INTEGER");
+  } catch (error) {
+    console.error('Migration error:', error);
+  }
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -37,7 +62,13 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 });
 
 ensureMemberStatusConstraint().finally(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  ensureBusinessCurrencySymbolColumn().finally(() => {
+    ensureMembersPausedEndDateColumn().finally(() => {
+      ensureMembersPauseFreezeColumns().finally(() => {
+        app.listen(PORT, () => {
+          console.log(`Server running on port ${PORT}`);
+        });
+      });
+    });
   });
 });

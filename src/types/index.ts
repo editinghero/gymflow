@@ -9,6 +9,7 @@ export interface Business {
   website?: string;
   contact_phone?: string;
   upi_id?: string;
+  currency_symbol?: string;
   created_at: string;
 }
 
@@ -23,6 +24,9 @@ export interface Member {
   status: string;
   start_date: string;
   end_date?: string;
+  paused_end_date?: string;
+  paused_at?: string;
+  paused_remaining_days?: number;
   created_at: string;
 }
 

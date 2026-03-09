@@ -71,12 +71,12 @@ export function CustomerDashboard() {
     setBusinessId(memberData.business_id);
     localStorage.setItem('customer_business_id', memberData.business_id);
 
-    const [plansRes, scheduleRes, businessRes, holidaysRes] = await Promise.all([
+    const [plansRes, scheduleRes, businessRes, holidaysRes] = (await Promise.all([
       db.from('plans').select('*').eq('business_id', memberData.business_id).eq('is_active', true),
       db.from('schedules').select('*').eq('business_id', memberData.business_id),
       db.from('businesses').select('*').eq('id', memberData.business_id).single(),
       db.from('holidays').select('*').eq('business_id', memberData.business_id),
-    ]);
+    ])) as any;
 
     if (plansRes.data) setPlans(plansRes.data);
     if (scheduleRes.data) setSchedule(scheduleRes.data);
@@ -120,9 +120,20 @@ export function CustomerDashboard() {
   }, [member?.status]);
 
   const currentPlan = plans.find(p => p.id === member?.plan_id);
-  const daysRemaining = member?.end_date 
-    ? differenceInDays(new Date(member.end_date), new Date()) 
-    : 0;
+  const daysRemaining = (() => {
+    if (member?.status === 'cancelled') return 0;
+    if (member?.status === 'paused' && typeof (member as any).paused_remaining_days === 'number') {
+      return Math.max(0, (member as any).paused_remaining_days);
+    }
+    if (!member?.end_date) return 0;
+    const end = new Date(member.end_date);
+    end.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diff = differenceInDays(end, today);
+    const value = diff >= 0 ? diff + 1 : 0;
+    return value;
+  })();
 
   const today = new Date().getDay();
   const todaySchedules = schedule.filter(s => s.day_of_week === today && s.is_open);
@@ -389,7 +400,9 @@ export function CustomerDashboard() {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
-                    Expires: {member.end_date && format(new Date(member.end_date), 'MMM d, yyyy')}
+                    {member.status === 'paused'
+                      ? `Frozen: ${typeof (member as any).paused_remaining_days === 'number' ? (member as any).paused_remaining_days : 0} days`
+                      : `Expires: ${member.end_date ? format(new Date(member.end_date), 'MMM d, yyyy') : ''}`}
                   </span>
                 </div>
 
@@ -533,7 +546,7 @@ export function CustomerDashboard() {
                         <h4 className="font-display text-xl font-medium mt-1">{plan.name}</h4>
                       </div>
                       <div className="text-right">
-                        <span className="text-2xl font-display font-semibold">₹{plan.price.toLocaleString('en-IN')}</span>
+                        <span className="text-2xl font-display font-semibold">{(business as any)?.currency_symbol || '₹'}{plan.price.toLocaleString('en-IN')}</span>
                         <span className="text-sm text-muted-foreground">{getDurationLabel(plan.duration_days)}</span>
                       </div>
                     </div>

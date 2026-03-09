@@ -41,13 +41,14 @@ export function PaymentRequests({ businessId }: PaymentRequestsProps) {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [currencySymbol, setCurrencySymbol] = useState('₹');
 
   const fetchData = async () => {
-    const [requestsRes, membersRes, plansRes] = await Promise.all([
+    const [requestsRes, membersRes, plansRes] = (await Promise.all([
       db.from('payment_requests').select('*').eq('business_id', businessId).order('created_at', { ascending: false }),
       db.from('members').select('id, full_name, email, plan_id, end_date').eq('business_id', businessId),
       db.from('plans').select('id, name, duration_days').eq('business_id', businessId),
-    ]);
+    ])) as any;
 
     if (requestsRes.data) setRequests(requestsRes.data);
     if (membersRes.data) setMembers(membersRes.data);
@@ -55,8 +56,18 @@ export function PaymentRequests({ businessId }: PaymentRequestsProps) {
     setLoading(false);
   };
 
+  const fetchCurrency = async () => {
+    const { data } = await db
+      .from('businesses')
+      .select('currency_symbol')
+      .eq('id', businessId)
+      .maybeSingle();
+    setCurrencySymbol((data as any)?.currency_symbol || '₹');
+  };
+
   useEffect(() => {
     fetchData();
+    fetchCurrency();
   }, [businessId]);
 
   const handleApprove = async (request: PaymentRequest) => {
@@ -72,18 +83,23 @@ export function PaymentRequests({ businessId }: PaymentRequestsProps) {
     }
 
     let newEndDate: string;
-    const today = new Date();
+    const now = new Date();
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
     const startDate = today.toISOString().split('T')[0];
+
+    const durationOffset = Math.max(0, plan.duration_days - 1);
 
     if (request.request_type === 'renew' && member.end_date) {
       const currentEndDate = new Date(member.end_date);
-      if (currentEndDate > today) {
-        newEndDate = addDays(currentEndDate, plan.duration_days).toISOString().split('T')[0];
+      currentEndDate.setHours(0, 0, 0, 0);
+      if (currentEndDate >= today) {
+        newEndDate = addDays(currentEndDate, durationOffset).toISOString().split('T')[0];
       } else {
-        newEndDate = addDays(today, plan.duration_days).toISOString().split('T')[0];
+        newEndDate = addDays(today, durationOffset).toISOString().split('T')[0];
       }
     } else {
-      newEndDate = addDays(today, plan.duration_days).toISOString().split('T')[0];
+      newEndDate = addDays(today, durationOffset).toISOString().split('T')[0];
     }
 
     const memberUpdate: any = {
@@ -173,7 +189,7 @@ export function PaymentRequests({ businessId }: PaymentRequestsProps) {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-display text-lg font-semibold">₹{request.amount.toLocaleString('en-IN')}</p>
+                    <p className="font-display text-lg font-semibold">{currencySymbol}{request.amount.toLocaleString('en-IN')}</p>
                     <p className="text-xs text-muted-foreground">{format(new Date(request.created_at), 'MMM d, h:mm a')}</p>
                   </div>
                 </div>
@@ -226,7 +242,7 @@ export function PaymentRequests({ businessId }: PaymentRequestsProps) {
                 <div>
                   <p className="text-sm font-medium">{getMemberName(request.member_id)}</p>
                   <p className="text-xs text-muted-foreground">
-                    {getPlanName(request.plan_id)} • ₹{request.amount.toLocaleString('en-IN')}
+                    {getPlanName(request.plan_id)} • {currencySymbol}{request.amount.toLocaleString('en-IN')}
                   </p>
                 </div>
                 <div className="text-right">

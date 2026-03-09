@@ -39,6 +39,7 @@ export function PlansManager({ businessId }: PlansManagerProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currencySymbol, setCurrencySymbol] = useState('₹');
   const [newPlan, setNewPlan] = useState({
     name: '',
     description: '',
@@ -59,8 +60,18 @@ export function PlansManager({ businessId }: PlansManagerProps) {
     setLoading(false);
   };
 
+  const fetchCurrency = async () => {
+    const { data } = await db
+      .from('businesses')
+      .select('currency_symbol')
+      .eq('id', businessId)
+      .maybeSingle();
+    setCurrencySymbol((data as any)?.currency_symbol || '₹');
+  };
+
   useEffect(() => {
     fetchPlans();
+    fetchCurrency();
   }, [businessId]);
 
   const handleSave = async () => {
@@ -190,7 +201,7 @@ export function PlansManager({ businessId }: PlansManagerProps) {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price (₹) *</Label>
+                  <Label htmlFor="price">Price ({currencySymbol}) *</Label>
                   <Input
                     id="price"
                     type="number"
@@ -277,7 +288,7 @@ export function PlansManager({ businessId }: PlansManagerProps) {
             </div>
 
             <div className="mb-4">
-              <span className="text-3xl font-display font-semibold">₹{plan.price.toLocaleString('en-IN')}</span>
+              <span className="text-3xl font-display font-semibold">{currencySymbol}{plan.price.toLocaleString('en-IN')}</span>
               <span className="text-muted-foreground">{getDurationLabel(plan.duration_days)}</span>
             </div>
 

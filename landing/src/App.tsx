@@ -145,18 +145,22 @@ export default function App() {
                 </a>
               </div>
 
-              <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="mt-10 grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
-                  <p className="text-sm text-muted-foreground">Setup time</p>
-                  <p className="mt-1 font-display text-xl font-semibold">2 minutes</p>
+                  <p className="text-sm text-muted-foreground">No setup time</p>
+                  <p className="mt-1 font-display text-xl font-semibold">Instant access</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
                   <p className="text-sm text-muted-foreground">Built for</p>
                   <p className="mt-1 font-display text-xl font-semibold">Small gyms</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-card/60 p-4">
-                  <p className="text-sm text-muted-foreground">Tech stack</p>
-                  <p className="mt-1 font-display text-xl font-semibold">React + Node</p>
+                  <p className="text-sm text-muted-foreground">Open Source</p>
+                  <p className="mt-1 font-display text-xl font-semibold">100% Secure</p>
+                </div>
+                <div className="rounded-2xl border border-border bg-card/60 p-4">
+                  <p className="text-sm text-muted-foreground">Privacy Respected</p>
+                  <p className="mt-1 font-display text-xl font-semibold">Self-hosted</p>
                 </div>
               </div>
             </div>
@@ -232,24 +236,18 @@ export default function App() {
               </div>
 
               <div className="rounded-2xl border border-border bg-background/60 p-5">
-                <p className="text-sm text-muted-foreground">Technical highlights</p>
-                <p className="mt-2 font-display text-2xl font-semibold">Built with modern web technologies</p>
+                <p className="text-sm text-muted-foreground">Try a demo login</p>
+                <p className="mt-2 font-display text-2xl font-semibold">Sample credentials</p>
                 <div className="mt-5 space-y-3">
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Frontend</p>
-                    <p className="mt-1 text-sm font-medium">React 18 + TypeScript + Vite</p>
+                    <p className="text-xs text-muted-foreground">Owner</p>
+                    <p className="mt-1 text-sm font-medium">Email: test1@test.com</p>
+                    <p className="text-sm font-medium">Password: test1@test.com</p>
                   </div>
                   <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Backend</p>
-                    <p className="mt-1 text-sm font-medium">Express.js + PostgreSQL + JWT</p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">UI/UX</p>
-                    <p className="mt-1 text-sm font-medium">Tailwind CSS + Radix UI + Glassmorphism</p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-card/60 p-4">
-                    <p className="text-xs text-muted-foreground">Security</p>
-                    <p className="mt-1 text-sm font-medium">bcrypt password hashing + JWT tokens</p>
+                    <p className="text-xs text-muted-foreground">Member</p>
+                    <p className="mt-1 text-sm font-medium">Email: testm1@test.com</p>
+                    <p className="text-sm font-medium">Password: testm1@test.com</p>
                   </div>
                 </div>
               </div>
@@ -341,7 +339,7 @@ export default function App() {
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
-            <div className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft">
+            <div className="rounded-3xl border border-border bg-card/60 p-6 shadow-soft flex flex-col h-full">
               <p className="text-sm text-muted-foreground">Free</p>
               <p className="mt-2 font-display text-3xl font-semibold">$0</p>
               <p className="mt-2 text-sm text-muted-foreground">Perfect for trying out GymFlow</p>
@@ -362,16 +360,20 @@ export default function App() {
                   <CheckCircle className="h-4 w-4 text-success" />
                   <span>Payment requests</span>
                 </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-destructive" />
+                  <span>No setup support</span>
+                </li>
               </ul>
               <a
                 href="https://gymflow.pages.dev"
-                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl border border-border bg-background hover:bg-muted transition-colors"
+                className="mt-auto pt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl border border-border bg-background hover:bg-muted transition-colors"
               >
                 Start free
               </a>
             </div>
 
-            <div className="rounded-3xl border-2 border-primary bg-card/60 p-6 shadow-soft relative">
+            <div className="rounded-3xl border-2 border-primary bg-card/60 p-6 shadow-soft relative flex flex-col h-full">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium">
                 Recommended
               </div>
@@ -395,12 +397,19 @@ export default function App() {
                   <CheckCircle className="h-4 w-4 text-success" />
                   <span>Future updates</span>
                 </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                  <span>Setup by the team</span>
+                </li>
               </ul>
               <a
                 href="https://gymflow.pages.dev"
-                className="mt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                className="mt-auto pt-6 inline-flex h-10 w-full items-center justify-center rounded-2xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
               >
-                Get started
+                <span className="flex flex-col items-center leading-none">
+                  <span>Get started</span>
+                  <span className="text-[10px] opacity-90 mt-1">₹2000</span>
+                </span>
               </a>
             </div>
           </div>

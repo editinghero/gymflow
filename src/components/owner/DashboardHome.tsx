@@ -26,6 +26,7 @@ export function DashboardHome({ businessId }: DashboardHomeProps) {
   const [todayCheckIns, setTodayCheckIns] = useState<CheckIn[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRevenue, setShowRevenue] = useState(false);
+  const [currencySymbol, setCurrencySymbol] = useState('₹');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +42,13 @@ export function DashboardHome({ businessId }: DashboardHomeProps) {
       if (membersRes.data) setMembers(membersRes.data);
       if (plansRes.data) setPlans(plansRes.data);
       if (checkInsRes.data) setTodayCheckIns(checkInsRes.data);
+
+      const { data: businessData } = await db
+        .from('businesses')
+        .select('currency_symbol')
+        .eq('id', businessId)
+        .maybeSingle();
+      setCurrencySymbol((businessData as any)?.currency_symbol || '₹');
       setLoading(false);
     };
 
@@ -101,7 +109,7 @@ export function DashboardHome({ businessId }: DashboardHomeProps) {
         />
         <StatCard
           title="Monthly Revenue"
-          value={showRevenue ? `₹${Math.round(monthlyRevenue).toLocaleString('en-IN')}` : '••••••'}
+          value={showRevenue ? `${currencySymbol}${Math.round(monthlyRevenue).toLocaleString('en-IN')}` : '••••••'}
           subtitle={showRevenue ? "Estimated" : "Click to show"}
           icon={IndianRupee}
           variant="success"
