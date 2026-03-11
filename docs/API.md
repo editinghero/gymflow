@@ -1,6 +1,6 @@
 # API
 
-Base: `http://localhost:3000/api`
+Base: `http://localhost:5000`
 
 ## Auth
 

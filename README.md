@@ -1,12 +1,14 @@
 # GymFlow
 
-Modern gym management system for fitness centers and gyms.
+Modern gym management system for gyms.
 
-**Live Demo**: [gymflow.pages.dev](https://gymflow.pages.dev)
+**Live demo**: [gymflowview.pages.dev](https://gymflowview.pages.dev)
+
+*This contain the demo version to and the sample login credentials.*
 
 ## Features
-
-### For Gym Owners
+<details>
+<summary>For Gym Owners</summary>
 
 **Member Management**
 - Approve/reject member registrations
@@ -37,8 +39,10 @@ Modern gym management system for fitness centers and gyms.
 - Set location and contact details
 - Configure payment information
 - Generate unique access codes
+</details>
 
-### For Members
+<details>
+<summary>For Members</summary>
 
 **Self Registration**
 - Register using gym access code
@@ -61,13 +65,12 @@ Modern gym management system for fitness centers and gyms.
 - Update personal information
 - Manage contact details
 - View membership status
+</details>
 
 ## Tech Stack
 
-- React 18 + TypeScript
+- React + TypeScript
 - Express.js + PostgreSQL
-- Tailwind CSS + Radix UI
-- JWT Authentication
 
 ## Quick Start
 
@@ -76,62 +79,15 @@ Modern gym management system for fitness centers and gyms.
 - Node.js 18+
 - PostgreSQL 14+
 
-### Installation
+### Installation & Database Setup
+Refer to the [Setup](docs/setup.md) documentation for detailed instructions.
 
-```bash
-git clone <repository-url>
-cd gymflow
-npm install
-cd server && npm install && cd ..
-```
+## Docs
 
-### Database Setup
+All docs are in [/docs](docs).
 
-```bash
-psql -U postgres -c "CREATE DATABASE gym_management;"
-psql -U postgres -d gym_management -f database/schema.sql
-```
-
-### Configuration
-
-Create `server/.env`:
-```env
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=gym_management
-DB_USER=postgres
-DB_PASSWORD=your_password
-JWT_SECRET=your_secret_key
-```
-
-Update `.env`:
-```env
-VITE_API_URL=http://localhost:3000/api
-```
-
-### Run
-
-```bash
-cd server && npm run dev
-```
-
-In another terminal:
-```bash
-npm run dev
-```
-
-Access at http://localhost:8080
-
-## Documentation
-
-Developer documentation in [/docs](docs):
-
-- [Setup Guide](docs/SETUP.md)
-- [API Documentation](docs/API.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-- [Deployment](docs/DEPLOYMENT.md)
+- [Setup (PostgreSQL / Neon)](docs/setup.md)
+- [API](docs/API.md)
 
 ## License
 

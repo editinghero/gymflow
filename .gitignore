@@ -25,10 +25,6 @@ Thumbs.db
 
 # coverage
 coverage/
-
-# tooling
-.kiro/
-
 # lock files (optional)
 bun.lockb
 package-lock.json
